@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="jumbotron text-center my-5">
+    <div class="container">
+  <h1 class="display-4">☕️ Coffee & Wifi 💻</h1>
+  <p class="lead">Want to work in a cafe but need power and wifi?</p>
+  <hr class="my-4">
+  <p>You've found the right place! Checkout my collection of cafes with data on power socket availability, wifi speed and coffee quality.</p>
+    <a class="btn btn-outline-secondary btn-lg text-dark" href="/" role="button">Add cafe!</a>
+</div>
+    </div>
+
+<div class="container">
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    {% for cafe in cafes %}
+    <div class="col">
+      <div class="card shadow-sm">
+        <img src="{{ cafe.img_url }}" class="card-img-top " height=300 alt="...">
+        <div class="card-body">
+          <p class="card-text mb-1"><b>{{ cafe.name }}</b></p>
+          <a class="card-text mb-4" target="blank" href="{{ cafe.map_url }}">📍{{ cafe.location }}</a>
+          <p class="card-text mb-2 mt-2">Number of seats: {{ cafe.seats }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary text-dark">View</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary text-dark">Edit</button>
+            </div>
+            <small class="text-body-secondary">Coffee Price: {{ cafe.coffee_price }} </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
