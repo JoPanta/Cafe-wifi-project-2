@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectMultipleField, SelectField
+from wtforms import StringField, SubmitField, SelectMultipleField, SelectField, BooleanField
 from wtforms.validators import DataRequired, URL
 from flask_sqlalchemy import SQLAlchemy
 
@@ -39,15 +39,15 @@ class AddForm(FlaskForm):
     map_url = StringField("Map URL", validators=[DataRequired()])
     img_url = StringField("Image URL", validators=[DataRequired()])
     location = StringField("Location Address", validators=[DataRequired()])
-    has_sockets = (SelectField(label="Power Sockets Available?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
-    has_toilet = (SelectField(label="Toilet Facilities Available?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
-    has_wifi = (SelectField(label="WI-FI Available?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
-    can_take_calls = (SelectField(label="Accepts Phone Calls?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
-    seats = (SelectField(label="Number of seats", choices=[("0-10", "0-10"), ("10-20", "10-20"),
-                                                                         ("20-30", "20-30"), ("30-40", "30-40"),
-                                                                                              ("40-50", "40-50"),
-                                                                                              ("50+", "50+")], validators=[DataRequired()]))
+
+    seats = SelectField(label="Number of Seats", choices=[("0-10", "0-10"), ("10-20", "10-20"),
+                                                          ("20-30", "20-30"), ("30-40", "30-40"),
+                                                          ("40-50", "40-50"), ("50+", "50+")], validators=[DataRequired()])
     coffee_price = StringField("Coffee Price (Lbs)", validators=[DataRequired()])
+    has_sockets = BooleanField("Power Sockets Available?")
+    has_toilet = BooleanField("Toilet Facilities Available?")
+    has_wifi = BooleanField("Wi-Fi Available?")
+    can_take_calls = BooleanField("Accepts Phone Calls?")
     submit = SubmitField("Submit")
 
 
@@ -56,7 +56,7 @@ def add():
     form = AddForm()
     if form.validate_on_submit():
         name = form.name.data
-        mpa_url = form.mpa_url.data
+        mpa_url = form.map_url.data
         img_url = form.img_url.data
         location = form.location.data
         has_sockets = form.has_sockets.data
