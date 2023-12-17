@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectMultipleField, SelectField
@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = 'secretcode'
 Bootstrap5(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cafes.db"
@@ -33,6 +33,46 @@ class Cafe(db.Model):
 def home():
     cafes = Cafe.query.all()
     return render_template("index.html", cafes=cafes)
+
+class AddForm(FlaskForm):
+    name = StringField("Place Name", validators=[DataRequired()])
+    map_url = StringField("Map URL", validators=[DataRequired()])
+    img_url = StringField("Image URL", validators=[DataRequired()])
+    location = StringField("Location Address", validators=[DataRequired()])
+    has_sockets = (SelectField(label="Power Sockets Available?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
+    has_toilet = (SelectField(label="Toilet Facilities Available?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
+    has_wifi = (SelectField(label="WI-FI Available?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
+    can_take_calls = (SelectField(label="Accepts Phone Calls?", choices=[("1", "Yes"), ("0", "No")], validators=[DataRequired()]))
+    seats = (SelectField(label="Number of seats", choices=[("0-10", "0-10"), ("10-20", "10-20"),
+                                                                         ("20-30", "20-30"), ("30-40", "30-40"),
+                                                                                              ("40-50", "40-50"),
+                                                                                              ("50+", "50+")], validators=[DataRequired()]))
+    coffee_price = StringField("Coffee Price (Lbs)", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    form = AddForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        mpa_url = form.mpa_url.data
+        img_url = form.img_url.data
+        location = form.location.data
+        has_sockets = form.has_sockets.data
+        has_toilet = form.has_toilet.data
+        has_wifi = form.has_wifi.data
+        can_take_calls = form.can_take_calls.data
+        seats = form.seats.data
+        coffee_price = form.coffee_price.data
+        cafe = Cafe(name=name, map_url=mpa_url, img_url=img_url, location=location, has_sockets=has_sockets,
+                    has_toilet=has_toilet, has_wifi=has_wifi, can_take_calls=can_take_calls, seats=seats, coffee_price=coffee_price)
+        db.session.add(cafe)
+        db.session.commit()
+        return redirect("/")
+    return render_template("add.html", form=form)
+
+
 
 
 
