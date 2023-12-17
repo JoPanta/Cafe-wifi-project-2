@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5 text-center">
+<div class="card mb-3">
+    <img src="{{ cafe.img_url }}" class="card-img-top" style="max-height: 600px; width: auto; object-fit: cover;">
+    <div class="card-body text-center">
+    <h3 class="card-title">{{cafe.name}}</h3>
+    <p class="card-text"><a class="card-text mb-4" target="blank" href="{{ cafe.map_url }}">📍{{ cafe.location }}</a></p>
+    <p class="card-text"><b class="text-body-secondary">Coffee price: {{cafe.coffee_price}}</b></p>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body text-center">
+    <h5 class="card-title">{{cafe.name}}'s Conditions</h5>
+    <p class="card-text"><small class="text-body-secondary">Power Sockets Available: {{cafe.has_sockets}}</small></p>
+    <p class="card-text"><small class="text-body-secondary">Toilet Facilities Available: {{cafe.has_toilet}}</small></p>
+    <p class="card-text"><small class="text-body-secondary">Wi-Fi Available: {{cafe.has_wifi}}</small></p>
+    <p class="card-text"><small class="text-body-secondary">Allows calls: {{cafe.can_take_calls}}</small></p>
+    <p class="card-text"><small class="text-body-secondary">Number of seats: {{cafe.seats}}</small></p>
+  </div>
+</div>
+    <div class="container text-center mt-5">
+    <a href="{{ url_for('edit_cafe', cafe_id=cafe.id) }}"><button type="button" class="btn btn-info">Edit Cafe</button></a>
+    </div>
+    <div class="container text-center">
+    <a href="{{ url_for('delete_cafe', cafe_id=cafe.id) }}"><button type="button" class="btn btn-danger mt-5">Delete Cafe</button></a>
+    </div>
+    </div>
+
+
+{% endblock %}

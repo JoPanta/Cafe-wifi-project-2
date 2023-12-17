@@ -3,10 +3,10 @@
 
 <div class="jumbotron text-center my-5">
     <div class="container">
-  <h1 class="display-4">☕️ Coffee & Wifi 💻</h1>
-  <p class="lead">Want to work in a cafe but need power and wifi?</p>
+  <h1 class="display-4">☕️ Coffee & Wi-Fi 💻</h1>
+  <p class="lead">Want to work in a cafe but need power and Wi-Fi?</p>
   <hr class="my-4">
-  <p>You've found the right place! Checkout my collection of cafes with data on power socket availability, wifi speed and coffee quality.</p>
+  <p>You've found the right place! Checkout my collection of cafes with data on power socket availability, Wi-Fi connection and coffee price.</p>
     <a class="btn btn-outline-secondary btn-lg text-dark" href="{{ url_for('add') }}" role="button">Add cafe!</a>
 </div>
     </div>
@@ -17,15 +17,18 @@
     {% for cafe in cafes %}
     <div class="col">
       <div class="card shadow-sm">
-        <img src="{{ cafe.img_url }}" class="card-img-top " height=300 alt="...">
+        <a href="{{ url_for('show_cafe', cafe_id=cafe.id) }}">
+          <img src="{{ cafe.img_url }}" class="card-img-top " height=300 alt="...">
+        </a>
         <div class="card-body">
-          <p class="card-text mb-1"><b>{{ cafe.name }}</b></p>
+          <a href="{{ url_for('show_cafe', cafe_id=cafe.id) }}", style="text-decoration: none; color: black;">
+            <p class="card-text mb-1"><b>{{ cafe.name }}</b></p></a>
           <a class="card-text mb-4" target="blank" href="{{ cafe.map_url }}">📍{{ cafe.location }}</a>
           <p class="card-text mb-2 mt-2">Number of seats: {{ cafe.seats }}</p>
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary text-dark">View</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary text-dark">Edit</button>
+              <a href="{{ url_for('show_cafe', cafe_id=cafe.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary text-dark">View</button></a>
+              <a href="{{ url_for('edit_cafe', cafe_id=cafe.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary text-dark">Edit</button></a>
             </div>
             <small class="text-body-secondary">Coffee Price: {{ cafe.coffee_price }} </small>
           </div>
